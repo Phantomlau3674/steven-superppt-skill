@@ -35,8 +35,19 @@ The skill folder itself contains:
 steven-superppt-skill/
   SKILL.md
   agents/openai.yaml
+  assets/samples/uffizi-main-works.pptx
   references/
 ```
+
+## Sample Deck
+
+The repository includes a complete editable PPTX sample:
+
+```text
+steven-superppt-skill/assets/samples/uffizi-main-works.pptx
+```
+
+It demonstrates a 12-slide museum-style deck generated from a short prompt, with artwork imagery embedded and text kept editable in Office.
 
 ## Use
 
