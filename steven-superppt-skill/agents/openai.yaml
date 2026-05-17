@@ -1,4 +1,4 @@
 interface:
   display_name: "Steven SuperPPT"
   short_description: "Plan, style, and build polished PPT decks."
-  default_prompt: "Use $steven-superppt-skill to plan and polish my PPT page by page, adapt any style references, then build a precise deck with image assets or prompt handoff where needed."
+  default_prompt: "Use $steven-superppt-skill to choose visual asset density, plan and polish my PPT page by page, adapt any style references, then build a precise deck with image assets or prompt handoff where needed."

@@ -12,7 +12,33 @@ Use this file as the execution contract for `steven-superppt-skill`. It keeps co
 - `references/imagegen-handoff.md`: required when direct image generation is unavailable and prompts must be handed to the user.
 - `references/design-review.md`: required for high-aesthetic or final deliverables.
 
+## Deck Visual Asset Density
+
+Record the selected deck-level density before writing the final outline or prompt pack:
+
+```yaml
+visual_asset_density: lean|standard|image-rich|auto
+resolved_visual_asset_density: lean|standard|image-rich
+density_reason: brief reason for the choice
+```
+
+Rules:
+
+- Ask the user to choose `lean`, `standard`, `image-rich`, or `auto` when the density is unclear.
+- Default to `standard` if the user wants immediate execution and no clear signal exists.
+- Resolve launch events, keynotes, product demos, Apple-style presentations, campaign decks, and cinematic decks to `image-rich`.
+- Resolve legal, compliance, board updates, financial reports, dense analysis, and mostly text/table decks to `lean` unless the user asks for a richer visual treatment.
+- The prompt pack and asset manifest must match the resolved density.
+
 ## `outline.md` Schema
+
+Every outline must include the chosen density and stable slide IDs.
+
+```yaml
+visual_asset_density: standard
+resolved_visual_asset_density: standard
+density_reason: default polished deck with balanced generated plates
+```
 
 Every slide row must include stable IDs and production fields.
 
@@ -80,10 +106,17 @@ Rules:
 
 Required before calling `$imagegen` for multiple assets.
 
+The number and type of prompt entries must follow `resolved_visual_asset_density`:
+
+- `lean`: cover and essential section/metaphor assets only.
+- `standard`: cover variants, section plates, and key-slide assets.
+- `image-rich`: one planned visual asset per slide, with extra variants for cover, hero, product, and transition slides.
+
 ```markdown
 ## Asset: S03-thermal-plate
 
 - slide_id: S03
+- density_rule: standard key-slide asset
 - visual_job:
 - proof_role: background|metaphor|object|texture|section_plate
 - variant_count: 3
@@ -179,6 +212,7 @@ Rules:
 
 Before final response:
 
+- `visual_asset_density` is recorded and resolved.
 - `outline.md` matches final slide count or explains intentional omissions.
 - `style-reference-analysis.md` exists when references were supplied.
 - `imagegen-prompt-pack.md` exists when multiple generated assets were needed.

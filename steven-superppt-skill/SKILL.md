@@ -1,6 +1,6 @@
 ---
 name: steven-superppt-skill
-description: "High-aesthetic hybrid presentation workflow for PPT/PPTX/PowerPoint and HTML slide decks. Use when a deck needs slide-by-slide content planning and polish, visual-system adaptation from user-provided style references, multiple image-generation plates or visual assets, keynote-style art direction, or precise HTML/SVG/Canvas/native-PPTX composition for editable text, data, diagrams, and layout. Includes prompt-handoff mode for environments without direct image generation. Do not use for simple file conversion, non-slide writing tasks, or brand-specific template work that is better handled by a dedicated brand/template skill."
+description: "High-aesthetic hybrid presentation workflow for PPT/PPTX/PowerPoint and HTML slide decks. Use when a deck needs slide-by-slide content planning and polish, visual-system adaptation from user-provided style references, visual asset density selection, multiple image-generation plates or visual assets, keynote-style art direction, or precise HTML/SVG/Canvas/native-PPTX composition for editable text, data, diagrams, and layout. Includes prompt-handoff mode for environments without direct image generation. Do not use for simple file conversion, non-slide writing tasks, or brand-specific template work that is better handled by a dedicated brand/template skill."
 ---
 
 # Steven SuperPPT Skill
@@ -50,6 +50,23 @@ Pick one or combine them:
 
 For detailed playbooks and output schemas, read `references/workflow-contract.md`. Use `references/content-and-style-scenarios.md` only when extra examples are needed.
 
+### 1.5 Choose Visual Asset Density
+
+At skill startup, choose a deck-level `visual_asset_density` before detailed content planning or production:
+
+- `lean`: restrained, information-first decks. Generate only cover, major section, and truly necessary metaphor plates.
+- `standard`: default polished decks. Generate cover variants, one plate per major section, and key-slide visuals where they improve comprehension or emotion.
+- `image-rich`: keynote, launch, product-demo, brand-story, campaign, or cinematic decks. Plan a visual asset for every slide, with extra variants for cover, product, transition, and hero slides.
+- `auto`: infer the density from the brief, then record the resolved value.
+
+Ask one concise choice when the user has not specified density and the task is not obviously auto-resolvable:
+
+```text
+请选择视觉资产密度：lean / standard / image-rich / auto。默认 standard；发布会、keynote、产品演示会自动按 image-rich。
+```
+
+Do not block on the question if the user wants immediate execution. Default to `standard`, but auto-upshift to `image-rich` for launch event, keynote, product reveal, visual-impact, Apple-style, campaign, cinematic, or demo-showcase requests. Auto-downshift to `lean` for legal, compliance, board update, financial report, dense analysis, or mostly text/table decks.
+
 ### 2. Lock the Brief
 
 Capture or infer:
@@ -59,6 +76,7 @@ Capture or infer:
 - content state: topic only, rough notes, researched facts, finished copy, or existing deck
 - required output: PPTX, HTML, PDF, images, or all of them
 - editability requirement in PowerPoint
+- visual asset density: `lean`, `standard`, `image-rich`, or `auto` with resolved value
 - brand constraints, reference decks, style images, fonts, colors, logos
 - delivery setting: projector, mobile screenshot, printed PDF, meeting screen, or social post
 
@@ -130,6 +148,13 @@ Use the route that fits the handoff:
 Use `$imagegen` for generated raster plates. If `$imagegen` has not been loaded in the current turn, read its `SKILL.md` before generating images. Follow its default mode: built-in `image_gen` first, CLI fallback only when the user explicitly asks.
 
 Use image generation for backgrounds, objects, textures, or wireframes only after the content plan, style reference pass, and aesthetic preflight are stable.
+
+Honor the chosen `visual_asset_density`:
+
+- `lean`: cover plate 1-2 variants; section plates only when they clarify structure; no decorative per-slide images.
+- `standard`: cover plate 2-4 variants; one section plate per major chapter; key-slide plates for conceptual, product, comparison, or transition slides; subtle programmatic backgrounds for dense data slides.
+- `image-rich`: every slide gets an asset plan; cover, hero, product, and transition slides get 2-4 variants; data and chart slides get low-density texture, spatial scaffolding, or abstract structure with clear safe zones, never fake dashboards.
+- `auto`: resolve to one of the above before writing the prompt pack, and state the reason.
 
 If the current environment cannot generate images directly, use prompt-handoff mode:
 

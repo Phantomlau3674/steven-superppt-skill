@@ -19,6 +19,17 @@ When direct image generation is not available, the skill switches to prompt-hand
 - It writes `references/asset-manifest.json` so generated assets can be placed later.
 - It builds a usable draft with sourced assets, neutral placeholders, or programmatic backgrounds when practical.
 
+## Visual Asset Density
+
+At startup, the skill asks or infers how image-rich the deck should be:
+
+| Mode | Use when | Image strategy |
+|---|---|---|
+| `lean` | Information-first reports, analysis, legal, compliance, board updates | Generate only cover, major section, and essential metaphor plates |
+| `standard` | Default polished business decks | Generate cover variants, section plates, and key-slide visuals |
+| `image-rich` | Launch events, keynotes, product demos, campaign decks, cinematic decks | Plan a visual asset for every slide, with extra variants for hero/product/transition slides |
+| `auto` | You want the agent to decide | Resolve to one of the above and record the reason |
+
 ## Install
 
 Copy the `steven-superppt-skill/` folder into your agent's skills directory.
@@ -67,6 +78,12 @@ Without image-generation access:
 
 ```text
 Use $steven-superppt-skill in prompt-handoff mode. Create the image prompts and asset manifest for me to generate externally.
+```
+
+For a visual-heavy launch or keynote:
+
+```text
+Use $steven-superppt-skill with image-rich visual asset density to make a product launch deck.
 ```
 
 ## Public Sharing Notes
